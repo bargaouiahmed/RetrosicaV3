@@ -1,0 +1,43 @@
+# Build output
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+TestResults/
+
+# .NET tooling
+.dotnet/
+artifacts/
+packages/
+project.lock.json
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+appsettings.*.json
+!appsettings.json
+
+# Docker local overrides
+docker-compose.override.yml
+compose.override.yaml
+
+# Generated data and media
+downloads/
+data/
+*.mp3
+*.wav
+*.m4a
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/

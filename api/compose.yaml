@@ -1,0 +1,39 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      DataDirectory: /app/data
+      YtDlpPath: /usr/local/bin/yt-dlp
+      FfmpegPath: /usr/bin/ffmpeg
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=retrosica;Username=retrosica;Password=${POSTGRES_PASSWORD:-retrosica_local_only_change_me}
+    ports:
+      - "8081:8080"
+    volumes:
+      - downloads-data:/app/data
+
+  postgres:
+    image: postgres:18
+    restart: always
+    environment:
+      POSTGRES_DB: retrosica
+      POSTGRES_USER: retrosica
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-retrosica_local_only_change_me}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U retrosica -d retrosica"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - postgres-data:/var/lib/postgresql
+
+volumes:
+  downloads-data:
+  postgres-data:
